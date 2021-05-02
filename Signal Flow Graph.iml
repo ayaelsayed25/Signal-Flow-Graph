@@ -7,5 +7,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="mxgraph-core-3.9.12" level="project" />
+    <orderEntry type="library" name="jgraphx-4.1.0" level="project" />
   </component>
 </module>
