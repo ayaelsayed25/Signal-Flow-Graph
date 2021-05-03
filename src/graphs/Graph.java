@@ -3,7 +3,6 @@ package graphs;
 import java.util.LinkedList;
 
 public class Graph {
-
     int vertices=0;
     LinkedList<LinkedList<Edge>> adjacencylist;
 
@@ -32,6 +31,9 @@ public class Graph {
                         list.get(j).destination + " with weight " + list.get(j).weight);
             }
         }
+    }
+    public void setVertices(int vertices) {
+        this.vertices = vertices;
     }
 }
 
