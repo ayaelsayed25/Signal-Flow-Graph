@@ -13,7 +13,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Map;
+import java.util.*;
 
 public class GUI extends JFrame {
     mxGraph graph;
@@ -80,7 +80,7 @@ public class GUI extends JFrame {
         getContentPane().add(mainPane, BorderLayout.WEST);
         //BUTTONS
         //FOR ADDING A VERTEX
-        addVertexBtn = new JButton("Add Vertex");
+        addVertexBtn = new JButton("Add Node");
         addVertexBtn.setBounds(170,30,180, 50);
         addVertexBtn.setBackground(col);
         addVertexBtn.setForeground(Color.white);
@@ -163,10 +163,9 @@ public class GUI extends JFrame {
     }
 
     public void addvertex(){
-        Object v = graph.insertVertex(parent, null, "Text", 30, 30,
+        Object v = graph.insertVertex(parent, null,Integer.toString(myGraph.getVertices()) , 30, 30,
                 60, 60);
         mxICell ver = (mxICell) v;
-        ver.setId(Integer.toString(myGraph.getVertices()));
         setVertexStyle(ver, "#FF5733");
         resetGraph();
         myGraph.addVertex();
@@ -177,15 +176,29 @@ public class GUI extends JFrame {
         for(int i=0; i< myGraph.getVertices(); i++)
         {
             mxICell vertex = (mxICell) list[i];
+            int loops = 0;
+            boolean flag = true;
             for (int j =0; j<vertex.getEdgeCount(); j++)
             {
                 mxICell edge = vertex.getEdgeAt(j);
-                String destination =(String) (edge.getTerminal(true)).getValue();
-                System.out.println(i + "  " + destination);
+                String destination =(String) (edge.getTerminal(false)).getValue();
+                if( i == Integer.valueOf(destination))
+                {
+                    loops++;
+                    if(loops > 1 && flag)
+                    {
+                        myGraph.addEgde(i, Integer.valueOf(destination), Integer.valueOf((String) graph.getModel().getValue(edge)));
+                        flag = false;
+                    }
+                }else
+                {
+                    myGraph.addEgde(i, Integer.valueOf(destination), Integer.valueOf((String) graph.getModel().getValue(edge)));
+                }
             }
             
         }
+        myGraph.printGraph();
+
     }
-
-
 }
+
