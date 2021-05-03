@@ -35,6 +35,10 @@ public class Graph {
     public void setVertices(int vertices) {
         this.vertices = vertices;
     }
+    public int getVertices()
+    {
+        return this.vertices;
+    }
 }
 
 

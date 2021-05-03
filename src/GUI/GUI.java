@@ -20,7 +20,6 @@ public class GUI extends JFrame {
     Object parent;
     JPanel mainPane;
     JPanel panelComp;
-    int verticesNumber;
     Graph myGraph ;
     public static final Color white_blue = new Color(51,153,255);
     public static final  Color col = new Color(223, 255, 0);
@@ -63,12 +62,12 @@ public class GUI extends JFrame {
             new mxGeometry(850, 700,
                     0, 0));
     graph.setVertexLabelsMovable(false);
+    graph.setAllowLoops(true);
     mainPane.add(graphComponent);
     setEdgeStyle();
     }
 
     private void initComponents() {
-        verticesNumber=0;
         myGraph =new Graph();
         // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables
         getContentPane().setLayout(new BorderLayout());
@@ -103,7 +102,7 @@ public class GUI extends JFrame {
         startBtn.setBorder(BorderFactory.createEmptyBorder());
         startBtn.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
-                addvertex();
+                startCalculation();
             }
         });
         //FOR REMOVING THE WHOLE GRAPH
@@ -164,12 +163,29 @@ public class GUI extends JFrame {
     }
 
     public void addvertex(){
-        verticesNumber++;
         Object v = graph.insertVertex(parent, null, "Text", 30, 30,
                 60, 60);
-        setVertexStyle((mxICell) v, "#FF5733");
+        mxICell ver = (mxICell) v;
+        ver.setId(Integer.toString(myGraph.getVertices()));
+        setVertexStyle(ver, "#FF5733");
         resetGraph();
         myGraph.addVertex();
     }
+    public void startCalculation()
+    {
+        Object[] list = graph.getChildVertices(graph.getDefaultParent());
+        for(int i=0; i< myGraph.getVertices(); i++)
+        {
+            mxICell vertex = (mxICell) list[i];
+            for (int j =0; j<vertex.getEdgeCount(); j++)
+            {
+                mxICell edge = vertex.getEdgeAt(j);
+                String destination =(String) (edge.getTerminal(true)).getValue();
+                System.out.println(i + "  " + destination);
+            }
+            
+        }
+    }
+
 
 }
