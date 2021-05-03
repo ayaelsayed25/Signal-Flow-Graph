@@ -6,6 +6,7 @@ import com.mxgraph.swing.mxGraphComponent;
 import com.mxgraph.util.mxConstants;
 import com.mxgraph.util.mxStyleUtils;
 import com.mxgraph.view.mxGraph;
+import graphs.Graph;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,14 +15,17 @@ public class GUI extends JFrame {
     mxGraph graph;
     Object parent;
     JPanel mainPane;
+    int verticesNumber;
+    Graph mygraph ;
     private JPanel dialogPane;
     public GUI() {
         super("Producer Consumer");
+
         initComponents();
 
         graph = new mxGraph(){
             @Override
-            public boolean isCellSelectable(Object cell)
+           public boolean isCellSelectable(Object cell)
             {
                 if (model.isEdge(cell))
                 {
@@ -46,7 +50,9 @@ public class GUI extends JFrame {
             Object v2 = graph.insertVertex(parent, null, "World!", 20, -30,
                     80, 30);
             setVertexStyle((mxICell) v2, "cyan");
+
             Object edge = graph.insertEdge(parent, null, "15", v1, v2);
+            addvertex();
             setEdgeStyle((mxICell) edge);
         }
         finally
@@ -54,7 +60,7 @@ public class GUI extends JFrame {
             graph.getModel().endUpdate();
         }
         mxGraphComponent graphComponent = new mxGraphComponent(graph);
-        graphComponent.setConnectable(false);
+        graphComponent.setConnectable(true);
         graphComponent.getViewport().setOpaque(true);
         graphComponent.getViewport().setBackground(Color.DARK_GRAY);
         graph.getModel().setGeometry(parent,
@@ -64,6 +70,8 @@ public class GUI extends JFrame {
     }
 
     private void initComponents() {
+        verticesNumber=0;
+        mygraph =new Graph();
         // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables
         getContentPane().setLayout(new BorderLayout());
         mainPane = new JPanel();
@@ -103,6 +111,13 @@ public class GUI extends JFrame {
         targetStyle = mxStyleUtils.setStyle(targetStyle, mxConstants.STYLE_FONTCOLOR, "magenta");
         targetStyle = mxStyleUtils.setStyle(targetStyle, mxConstants.STYLE_FONTSIZE, "22");
         edge.setStyle(targetStyle);
+    }
+
+    public void addvertex(){
+        Object v = graph.insertVertex(parent, null, "World!", 20, -30,
+                80, 30);
+        setVertexStyle((mxICell) v, "cyan");
+
     }
 
 }
