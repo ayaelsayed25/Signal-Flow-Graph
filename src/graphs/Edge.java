@@ -2,11 +2,11 @@ package graphs;
 
 public class Edge {
 
-        int source;
-        int destination;
+        String source;
+        String destination;
         int weight;
 
-        public Edge(int source, int destination, int weight) {
+        public Edge(String source, String destination, int weight) {
             this.source = source;
             this.destination = destination;
             this.weight = weight;

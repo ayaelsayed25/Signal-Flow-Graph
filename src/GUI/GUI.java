@@ -3,8 +3,7 @@ package GUI;
 import com.mxgraph.model.mxGeometry;
 import com.mxgraph.model.mxICell;
 import com.mxgraph.swing.mxGraphComponent;
-import com.mxgraph.util.mxConstants;
-import com.mxgraph.util.mxStyleUtils;
+import com.mxgraph.util.*;
 import com.mxgraph.view.mxGraph;
 import com.mxgraph.view.mxStylesheet;
 import graphs.Graph;
@@ -13,7 +12,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.*;
+import java.util.Map;
 
 public class GUI extends JFrame {
     mxGraph graph;
@@ -50,8 +49,15 @@ public class GUI extends JFrame {
     graph.getModel().setGeometry(graph.getDefaultParent(),
             new mxGeometry(850, 700,
                     0, 0));
-    graph.setVertexLabelsMovable(false);
+    graph.setVertexLabelsMovable(true);
     graph.setAllowLoops(true);
+    graph.addListener(mxEvent.CELL_CONNECTED, (sender, evt) -> {
+                if (!(boolean) evt.getProperties().get("source")) {
+                    mxICell edge =(mxICell) evt.getProperties().get("edge");
+                    edge.setValue("1");
+                }
+            }
+    );
     mainPane.add(graphComponent);
     setEdgeStyle();
     }
@@ -152,12 +158,11 @@ public class GUI extends JFrame {
     }
 
     public void addvertex(){
-        Object v = graph.insertVertex(graph.getDefaultParent(), null,Integer.toString(myGraph.getVertices()) , 30, 30,
+        Object v = graph.insertVertex(graph.getDefaultParent(), null,"Text" , 30, 30,
                 60, 60);
         mxICell ver = (mxICell) v;
         setVertexStyle(ver, "#FF5733");
         resetGraph();
-        myGraph.addVertex();
     }
     public void startCalculation()
     {
@@ -166,11 +171,13 @@ public class GUI extends JFrame {
         for(int i=0; i< list.length; i++)
         {
             mxICell vertex = (mxICell) list[i];
+            myGraph.addVertex();
             Object[] edges = graph.getEdges(vertex, graph.getDefaultParent(), false, true, true);
             for (int j =0; j<edges.length; j++)
             {
                 String destination =(String) (((mxICell)edges[j]).getTerminal(false)).getValue();
-                myGraph.addEgde(i, Integer.valueOf(destination), Integer.valueOf((String) graph.getModel().getValue(edges[j])));
+                String source =(String) (((mxICell)edges[j]).getTerminal(true)).getValue();
+                myGraph.addEgde(source, destination, Integer.valueOf((String) graph.getModel().getValue(edges[j])));
             }
             
         }
