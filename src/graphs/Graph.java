@@ -32,6 +32,11 @@ public class Graph {
             }
         }
     }
+    public void removeGraph()
+    {
+        this.vertices = 0;
+        adjacencylist.clear();
+    }
     public void setVertices(int vertices) {
         this.vertices = vertices;
     }

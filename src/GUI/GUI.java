@@ -17,7 +17,6 @@ import java.util.*;
 
 public class GUI extends JFrame {
     mxGraph graph;
-    Object parent;
     JPanel mainPane;
     JPanel panelComp;
     Graph myGraph ;
@@ -32,18 +31,8 @@ public class GUI extends JFrame {
     initComponents();
 
     graph = new mxGraph(){
-        @Override
-       public boolean isCellSelectable(Object cell)
-        {
-            if (model.isEdge(cell))
-            {
-                return false;
-            }
 
-            return super.isCellSelectable(cell);
-        }
     };
-    parent = graph.getDefaultParent();
     graph.setAllowDanglingEdges(false);
     graph.getModel().beginUpdate();
     try
@@ -58,7 +47,7 @@ public class GUI extends JFrame {
     graphComponent.setConnectable(true);
     graphComponent.getViewport().setOpaque(true);
     graphComponent.getViewport().setBackground(Color.gray);
-    graph.getModel().setGeometry(parent,
+    graph.getModel().setGeometry(graph.getDefaultParent(),
             new mxGeometry(850, 700,
                     0, 0));
     graph.setVertexLabelsMovable(false);
@@ -118,7 +107,7 @@ public class GUI extends JFrame {
                 graph.removeCells(graph.getChildVertices(graph.getDefaultParent()));
                 graph.getModel().beginUpdate();
                 graph.getModel().endUpdate();
-                myGraph.setVertices(0);
+                myGraph.removeGraph();
                 addvertex();
             }
         });
@@ -157,13 +146,13 @@ public class GUI extends JFrame {
         stil.put(mxConstants.STYLE_FONTCOLOR, "white");
         stil.put(mxConstants.STYLE_LABEL_BACKGROUNDCOLOR, "black");
         stil.put(mxConstants.STYLE_FONTSIZE, "22");
-        stil.put(mxConstants.STYLE_EDGE, mxConstants.EDGESTYLE_SEGMENT);
+        stil.put(mxConstants.STYLE_EDGE, mxConstants.EDGESTYLE_ORTHOGONAL);
         foo.setDefaultEdgeStyle(stil);
         graph.setStylesheet(foo);
     }
 
     public void addvertex(){
-        Object v = graph.insertVertex(parent, null,Integer.toString(myGraph.getVertices()) , 30, 30,
+        Object v = graph.insertVertex(graph.getDefaultParent(), null,Integer.toString(myGraph.getVertices()) , 30, 30,
                 60, 60);
         mxICell ver = (mxICell) v;
         setVertexStyle(ver, "#FF5733");
@@ -173,27 +162,15 @@ public class GUI extends JFrame {
     public void startCalculation()
     {
         Object[] list = graph.getChildVertices(graph.getDefaultParent());
-        for(int i=0; i< myGraph.getVertices(); i++)
+        System.out.println(list.length);
+        for(int i=0; i< list.length; i++)
         {
             mxICell vertex = (mxICell) list[i];
-            int loops = 0;
-            boolean flag = true;
-            for (int j =0; j<vertex.getEdgeCount(); j++)
+            Object[] edges = graph.getEdges(vertex, graph.getDefaultParent(), false, true, true);
+            for (int j =0; j<edges.length; j++)
             {
-                mxICell edge = vertex.getEdgeAt(j);
-                String destination =(String) (edge.getTerminal(false)).getValue();
-                if( i == Integer.valueOf(destination))
-                {
-                    loops++;
-                    if(loops > 1 && flag)
-                    {
-                        myGraph.addEgde(i, Integer.valueOf(destination), Integer.valueOf((String) graph.getModel().getValue(edge)));
-                        flag = false;
-                    }
-                }else
-                {
-                    myGraph.addEgde(i, Integer.valueOf(destination), Integer.valueOf((String) graph.getModel().getValue(edge)));
-                }
+                String destination =(String) (((mxICell)edges[j]).getTerminal(false)).getValue();
+                myGraph.addEgde(i, Integer.valueOf(destination), Integer.valueOf((String) graph.getModel().getValue(edges[j])));
             }
             
         }
