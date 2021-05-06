@@ -18,12 +18,14 @@ public class GUI extends JFrame {
     mxGraph graph;
     JPanel mainPane;
     JPanel panelComp;
+
     Graph myGraph ;
     public static final Color white_blue = new Color(51,153,255);
     public static final  Color col = new Color(223, 255, 0);
     JButton addVertexBtn;
     JButton startBtn;
     JButton removeGraphBtn;
+    JLabel WarningLabel;
     public GUI() {
     super("Producer Consumer");
 
@@ -49,15 +51,21 @@ public class GUI extends JFrame {
     graph.getModel().setGeometry(graph.getDefaultParent(),
             new mxGeometry(850, 700,
                     0, 0));
-    graph.setVertexLabelsMovable(true);
+    graph.setVertexLabelsMovable(false);
+    graph.setEdgeLabelsMovable(false);
     graph.setAllowLoops(true);
     graph.addListener(mxEvent.CELL_CONNECTED, (sender, evt) -> {
+
                 if (!(boolean) evt.getProperties().get("source")) {
                     mxICell edge =(mxICell) evt.getProperties().get("edge");
                     edge.setValue("1");
                 }
             }
+
     );
+
+
+
     mainPane.add(graphComponent);
     setEdgeStyle();
     }
@@ -97,7 +105,11 @@ public class GUI extends JFrame {
         startBtn.setBorder(BorderFactory.createEmptyBorder());
         startBtn.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
-                startCalculation();
+                myGraph.removeGraph();
+                if(checkEdgesValue()){
+                    startCalculation();
+                }
+
             }
         });
         //FOR REMOVING THE WHOLE GRAPH
@@ -117,9 +129,15 @@ public class GUI extends JFrame {
                 addvertex();
             }
         });
+        //FOR warning label
+        WarningLabel=new JLabel();
+        WarningLabel.setBounds(170,300,180,50);
+
+        
         panelComp.add(addVertexBtn);
         panelComp.add(startBtn);
         panelComp.add(removeGraphBtn);
+        panelComp.add(WarningLabel);
         pack();
 
     }
@@ -164,6 +182,20 @@ public class GUI extends JFrame {
         setVertexStyle(ver, "#FF5733");
         resetGraph();
     }
+
+
+    public boolean checkEdgesValue(){
+        Object[] list = graph.getChildEdges(graph.getDefaultParent());
+        for(int i=0; i< list.length; i++){
+           if(!isInteger((String) graph.getModel().getValue(list[i]),10)){
+               WarningLabel.setText("please make sure that all the gains are numeric values");
+               return false;
+           }
+        }
+        WarningLabel.setText("");
+        return true;
+    }
+
     public void startCalculation()
     {
         Object[] list = graph.getChildVertices(graph.getDefaultParent());
@@ -183,6 +215,18 @@ public class GUI extends JFrame {
         }
         myGraph.printGraph();
 
+    }
+
+    public  boolean isInteger(String s, int radix) {
+        if(s.isEmpty()) return false;
+        for(int i = 0; i < s.length(); i++) {
+            if(i == 0 && s.charAt(i) == '-') {
+                if(s.length() == 1) return false;
+                else continue;
+            }
+            if(Character.digit(s.charAt(i),radix) < 0) return false;
+        }
+        return true;
     }
 }
 
