@@ -12,13 +12,13 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.LinkedList;
 import java.util.Map;
 
 public class GUI extends JFrame {
     mxGraph graph;
     JPanel mainPane;
     JPanel panelComp;
-
     Graph myGraph ;
     public static final Color white_blue = new Color(51,153,255);
     public static final  Color col = new Color(223, 255, 0);
@@ -26,6 +26,7 @@ public class GUI extends JFrame {
     JButton startBtn;
     JButton removeGraphBtn;
     JLabel WarningLabel;
+    LinkedList<Object> redo;
     public GUI() {
     super("Producer Consumer");
 
@@ -63,9 +64,6 @@ public class GUI extends JFrame {
             }
 
     );
-
-
-
     mainPane.add(graphComponent);
     setEdgeStyle();
     }
@@ -81,6 +79,7 @@ public class GUI extends JFrame {
         panelComp.setBackground(white_blue);
         getContentPane().add(panelComp, BorderLayout.CENTER);
         getContentPane().add(mainPane, BorderLayout.WEST);
+        redo = new LinkedList<Object>();
         //BUTTONS
         //FOR ADDING A VERTEX
         addVertexBtn = new JButton("Add Node");
@@ -129,11 +128,38 @@ public class GUI extends JFrame {
                 addvertex();
             }
         });
+        //FOR UNDO :
+        JButton undoBtn = new JButton("Undo");
+        undoBtn.setBounds(250,500,100,30);
+        undoBtn.setBackground(col);
+        undoBtn.setForeground(Color.white);
+        boldFont = new Font("sans serif", Font.BOLD, 20);
+        undoBtn.setFont(boldFont);
+        undoBtn.setBorder(BorderFactory.createEmptyBorder());
+        undoBtn.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+                undoChanges();
+            }
+        });
+        //FOR REDO:
+        JButton redoBtn = new JButton("Undo");
+        redoBtn.setBounds(250,600,100,30);
+        redoBtn.setBackground(col);
+        redoBtn.setForeground(Color.white);
+        boldFont = new Font("sans serif", Font.BOLD, 20);
+        redoBtn.setFont(boldFont);
+        redoBtn.setBorder(BorderFactory.createEmptyBorder());
+        redoBtn.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+                redoChanges();
+            }
+        });
+
         //FOR warning label
         WarningLabel=new JLabel();
         WarningLabel.setBounds(170,300,180,50);
-
-        
+        panelComp.add(redoBtn);
+        panelComp.add(undoBtn);
         panelComp.add(addVertexBtn);
         panelComp.add(startBtn);
         panelComp.add(removeGraphBtn);
@@ -227,6 +253,23 @@ public class GUI extends JFrame {
             if(Character.digit(s.charAt(i),radix) < 0) return false;
         }
         return true;
+    }
+    public void  undoChanges()
+    {
+        Object[] list=graph.getChildCells(graph.getDefaultParent());
+        if(list.length == 0)
+            return;
+        Object obj = list[list.length - 1];
+        redo.add(obj);
+        graph.getModel().remove(obj);
+    }
+    public void redoChanges()
+    {
+        if(!redo.isEmpty())
+        {
+            Object obj = redo.removeLast();
+            graph.addCell((mxICell)obj);
+        }
     }
 }
 
