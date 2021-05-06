@@ -3,12 +3,16 @@ package GUI;
 import com.mxgraph.model.mxGeometry;
 import com.mxgraph.model.mxICell;
 import com.mxgraph.swing.mxGraphComponent;
-import com.mxgraph.util.*;
+import com.mxgraph.util.mxConstants;
+import com.mxgraph.util.mxEvent;
+import com.mxgraph.util.mxRectangle;
+import com.mxgraph.util.mxStyleUtils;
 import com.mxgraph.view.mxGraph;
 import com.mxgraph.view.mxStylesheet;
 import graphs.Graph;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -22,10 +26,14 @@ public class GUI extends JFrame {
     Graph myGraph ;
     public static final Color white_blue = new Color(51,153,255);
     public static final  Color col = new Color(223, 255, 0);
+    public static final Color col2 = new Color(255, 45, 150 );
+    public static final Color col3 = new Color(251, 251, 251);
     JButton addVertexBtn;
     JButton startBtn;
     JButton removeGraphBtn;
     JLabel WarningLabel;
+    JTextArea display;
+    public String output = "Heloo hvjhasjfjdafhjfdafdhafhjadsfhjfdashfvshvhcvhafchfh\njghjfsjhsvahvxhajfcjafdhfhdvhavhjvshavdhfhdfahfshafhdfahfdjafdhfahvcxhvbxv\nbjkvahdfhafhdfshfahdfhsafdj\nbjkvahdfhafhdfshfahdfhsafdj\nbjkvahdfhafhdfshfahdfhsafdj\nbjkvahdfhafhdfshfahdfhsafdj\nbjkvahdfhafhdfshfahdfhsafdj\nbjkvahdfhafhdfshfahdfhsafdj\nbjkvahdfhafhdfshfahdfhsafdj\nbjkvahdfhafhdfshfahdfhsafdj\nbjkvahdfhafhdfshfahdfhsafdj\nbjkvahdfhafhdfshfahdfhsafdj\nbjkvahdfhafhdfshfahdfhsafdj\nbjkvahdfhafhdfshfahdfhsafdj\nbjkvahdfhafhdfshfahdfhsafdj\nbjkvahdfhafhdfshfahdfhsafdj\nbjkvahdfhafhdfshfahdfhsafdj\nbjkvahdfhafhdfshfahdfhsafdj";
     LinkedList<Object> redo;
     public GUI() {
     super("Producer Consumer");
@@ -48,10 +56,12 @@ public class GUI extends JFrame {
     mxGraphComponent graphComponent = new mxGraphComponent(graph);
     graphComponent.setConnectable(true);
     graphComponent.getViewport().setOpaque(true);
-    graphComponent.getViewport().setBackground(Color.gray);
+    graphComponent.getViewport().setBackground(col3);
     graph.getModel().setGeometry(graph.getDefaultParent(),
-            new mxGeometry(850, 700,
+            new mxGeometry(980, 750,
                     0, 0));
+    graph.setMinimumGraphSize(new mxRectangle(980, 750, 0, 0));
+    graph.setCollapseToPreferredSize(true);
     graph.setVertexLabelsMovable(false);
     graph.setEdgeLabelsMovable(false);
     graph.setAllowLoops(true);
@@ -73,20 +83,20 @@ public class GUI extends JFrame {
         // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables
         getContentPane().setLayout(new BorderLayout());
         mainPane = new JPanel();
-        mainPane.setBackground(Color.GRAY);
+        mainPane.setBackground(col3);
         panelComp = new JPanel();
         panelComp.setLayout(null);
         panelComp.setBackground(white_blue);
         getContentPane().add(panelComp, BorderLayout.CENTER);
-        getContentPane().add(mainPane, BorderLayout.WEST);
+        getContentPane().add(mainPane, BorderLayout.EAST);
         redo = new LinkedList<Object>();
         //BUTTONS
+        Font boldFont = new Font("SansSerif", Font.BOLD, 16);
         //FOR ADDING A VERTEX
         addVertexBtn = new JButton("Add Node");
-        addVertexBtn.setBounds(170,30,180, 50);
+        addVertexBtn.setBounds(70,105,150, 40);
         addVertexBtn.setBackground(col);
-        addVertexBtn.setForeground(Color.white);
-        Font boldFont = new Font("sans serif", Font.BOLD, 20);
+        addVertexBtn.setForeground(Color.gray);
         addVertexBtn.setFont(boldFont);
         addVertexBtn.setBorder(BorderFactory.createEmptyBorder());
         addVertexBtn.addActionListener(new ActionListener(){
@@ -95,11 +105,10 @@ public class GUI extends JFrame {
             }
         });
         //FOR STARTING CALCULATION
-        startBtn = new JButton("Start Calculations");
-        startBtn.setBounds(170,90,180,50);
+        startBtn = new JButton("Start Analysis");
+        startBtn.setBounds(70,160,150,40);
         startBtn.setBackground(col);
-        startBtn.setForeground(Color.white);
-        boldFont = new Font("sans serif", Font.BOLD, 20);
+        startBtn.setForeground(Color.gray);
         startBtn.setFont(boldFont);
         startBtn.setBorder(BorderFactory.createEmptyBorder());
         startBtn.addActionListener(new ActionListener(){
@@ -113,10 +122,9 @@ public class GUI extends JFrame {
         });
         //FOR REMOVING THE WHOLE GRAPH
         removeGraphBtn = new JButton("Remove Graph");
-        removeGraphBtn.setBounds(170,150,180,50);
+        removeGraphBtn.setBounds(70,215,150,40);
         removeGraphBtn.setBackground(col);
-        removeGraphBtn.setForeground(Color.white);
-        boldFont = new Font("sans serif", Font.BOLD, 20);
+        removeGraphBtn.setForeground(Color.gray);
         removeGraphBtn.setFont(boldFont);
         removeGraphBtn.setBorder(BorderFactory.createEmptyBorder());
         removeGraphBtn.addActionListener(new ActionListener(){
@@ -128,12 +136,12 @@ public class GUI extends JFrame {
                 addvertex();
             }
         });
+        boldFont = new Font("SansSerif", Font.ITALIC, 14);
         //FOR UNDO :
         JButton undoBtn = new JButton("Undo");
-        undoBtn.setBounds(250,500,100,30);
-        undoBtn.setBackground(col);
+        undoBtn.setBounds(250,135,80,30);
+        undoBtn.setBackground(col2);
         undoBtn.setForeground(Color.white);
-        boldFont = new Font("sans serif", Font.BOLD, 20);
         undoBtn.setFont(boldFont);
         undoBtn.setBorder(BorderFactory.createEmptyBorder());
         undoBtn.addActionListener(new ActionListener(){
@@ -142,11 +150,10 @@ public class GUI extends JFrame {
             }
         });
         //FOR REDO:
-        JButton redoBtn = new JButton("Undo");
-        redoBtn.setBounds(250,600,100,30);
-        redoBtn.setBackground(col);
+        JButton redoBtn = new JButton("Redo");
+        redoBtn.setBounds(250,175,80,30);
+        redoBtn.setBackground(col2);
         redoBtn.setForeground(Color.white);
-        boldFont = new Font("sans serif", Font.BOLD, 20);
         redoBtn.setFont(boldFont);
         redoBtn.setBorder(BorderFactory.createEmptyBorder());
         redoBtn.addActionListener(new ActionListener(){
@@ -154,18 +161,71 @@ public class GUI extends JFrame {
                 redoChanges();
             }
         });
-
+        //FOR EXIT BUTTON:
+        JButton exitBtn = new JButton("Exit");
+        exitBtn.setBounds(20,810,80,30);
+        exitBtn.setBackground(col2);
+        exitBtn.setForeground(Color.white);
+        exitBtn.setFont(boldFont);
+        exitBtn.setBorder(BorderFactory.createEmptyBorder());
+        exitBtn.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+                System.exit(0);
+            }
+        });
         //FOR warning label
         WarningLabel=new JLabel();
-        WarningLabel.setBounds(170,300,180,50);
+        WarningLabel.setBounds(30,250,350,50);
+        WarningLabel.setForeground(white_blue);
+        boldFont = new Font("SansSerif", Font.BOLD, 16);
+        WarningLabel.setFont(boldFont);
+        WarningLabel.setText("Make sure your entry is not wrong!");
+        //FOR  TITLE
+        JLabel lbl = new JLabel();
+        lbl.setBounds(15, 15, 360, 60);
+        lbl.setForeground(col3);
+        lbl.setText("Signal Flow Graph Solver ©");
+        boldFont = new Font("SansSerif", Font.ITALIC + Font.BOLD, 27);
+        lbl.setFont(boldFont);
+        //User guide
+        JLabel userGuide = new JLabel();
+        userGuide.setBounds(245, 190, 360, 80);
+        userGuide.setForeground(col3);
+        userGuide.setText("<html>*Double click on nodes and<br/> edges to edit the text.</html>");
+        boldFont = new Font("SansSerif", Font.ITALIC + Font.BOLD, 13);
+        userGuide.setFont(boldFont);
+        //label for input :
+        JLabel lb = new JLabel();
+        lb.setBounds(20, 310, 100, 20);
+        lb.setForeground(col3);
+        lb.setText("Input: ");
+        boldFont = new Font("SansSerif", Font.BOLD, 20);
+        lb.setFont(boldFont);
+        //input :
+        display = new JTextArea();
+        display.setText(output);
+        display.setEditable(false); // set textArea non-editable
+        display.setBackground(new Color(176, 175, 179 ));
+        boldFont = new Font("SansSerif", Font.ITALIC, 17);
+        display.setForeground(col3);
+        display.setFont(boldFont);
+        display.setBorder(new EmptyBorder(20,20,0,0));//top,left,bottom,right
+        JScrollPane scroll = new JScrollPane(display);
+        scroll.setBounds(20, 350, 400, 400);
+        scroll.setSize(400, 430);
+        scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+        scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        panelComp.add(scroll);
+        panelComp.add(userGuide);
+        panelComp.add(lbl);
+        panelComp.add(lb);
+        panelComp.add(exitBtn);
         panelComp.add(redoBtn);
         panelComp.add(undoBtn);
         panelComp.add(addVertexBtn);
         panelComp.add(startBtn);
         panelComp.add(removeGraphBtn);
         panelComp.add(WarningLabel);
-        pack();
-
     }
     public void resetGraph(){
         //code here
@@ -175,6 +235,7 @@ public class GUI extends JFrame {
         GUI frame = new GUI();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setExtendedState(java.awt.Frame.MAXIMIZED_BOTH);
+        frame.setUndecorated(true);
         frame.setVisible(true);
     }
     //STYLES FOR VERTICES
@@ -192,10 +253,10 @@ public class GUI extends JFrame {
         final mxStylesheet foo = graph.getStylesheet();
         final Map<String, Object> stil = foo.getDefaultEdgeStyle();
         stil.put(mxConstants.STYLE_ROUNDED, true);
-        stil.put(mxConstants.STYLE_STROKECOLOR, "white");
+        stil.put(mxConstants.STYLE_STROKECOLOR, "black");
         stil.put(mxConstants.STYLE_FONTCOLOR, "white");
         stil.put(mxConstants.STYLE_LABEL_BACKGROUNDCOLOR, "black");
-        stil.put(mxConstants.STYLE_FONTSIZE, "22");
+        stil.put(mxConstants.STYLE_FONTSIZE, "18");
         stil.put(mxConstants.STYLE_EDGE, mxConstants.EDGESTYLE_ORTHOGONAL);
         foo.setDefaultEdgeStyle(stil);
         graph.setStylesheet(foo);
@@ -205,7 +266,7 @@ public class GUI extends JFrame {
         Object v = graph.insertVertex(graph.getDefaultParent(), null,"Text" , 30, 30,
                 60, 60);
         mxICell ver = (mxICell) v;
-        setVertexStyle(ver, "#FF5733");
+        setVertexStyle(ver, "#FF2D96");
         resetGraph();
     }
 
@@ -214,11 +275,11 @@ public class GUI extends JFrame {
         Object[] list = graph.getChildEdges(graph.getDefaultParent());
         for(int i=0; i< list.length; i++){
            if(!isInteger((String) graph.getModel().getValue(list[i]),10)){
-               WarningLabel.setText("please make sure that all the gains are numeric values");
+               WarningLabel.setForeground(new Color(225, 5, 108));
                return false;
            }
         }
-        WarningLabel.setText("");
+        WarningLabel.setForeground(white_blue);
         return true;
     }
 
