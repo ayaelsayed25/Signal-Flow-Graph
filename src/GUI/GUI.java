@@ -101,7 +101,7 @@ public class GUI extends JFrame {
         Font boldFont = new Font("SansSerif", Font.BOLD, 16);
         //FOR ADDING A VERTEX
         addVertexBtn = new JButton("Add Node");
-        addVertexBtn.setBounds(70,105,150, 40);
+        addVertexBtn.setBounds(40,105,150, 40);
         addVertexBtn.setBackground(col);
         addVertexBtn.setForeground(Color.gray);
         addVertexBtn.setFont(boldFont);
@@ -113,7 +113,7 @@ public class GUI extends JFrame {
         });
         //FOR STARTING CALCULATION
         startBtn = new JButton("Start Analysis");
-        startBtn.setBounds(70,160,150,40);
+        startBtn.setBounds(40,160,150,40);
         startBtn.setBackground(col);
         startBtn.setForeground(Color.gray);
         startBtn.setFont(boldFont);
@@ -127,7 +127,7 @@ public class GUI extends JFrame {
         });
         //FOR REMOVING THE WHOLE GRAPH
         removeGraphBtn = new JButton("Remove Graph");
-        removeGraphBtn.setBounds(70,215,150,40);
+        removeGraphBtn.setBounds(40,215,150,40);
         removeGraphBtn.setBackground(col);
         removeGraphBtn.setForeground(Color.gray);
         removeGraphBtn.setFont(boldFont);
@@ -143,7 +143,7 @@ public class GUI extends JFrame {
         boldFont = new Font("SansSerif", Font.ITALIC, 14);
         //FOR UNDO :
         JButton undoBtn = new JButton("Undo");
-        undoBtn.setBounds(250,120,80,30);
+        undoBtn.setBounds(220,110,80,30);
         undoBtn.setBackground(col2);
         undoBtn.setForeground(Color.white);
         undoBtn.setFont(boldFont);
@@ -155,7 +155,7 @@ public class GUI extends JFrame {
         });
         //FOR REDO:
         JButton redoBtn = new JButton("Redo");
-        redoBtn.setBounds(250,160,80,30);
+        redoBtn.setBounds(220,150,80,30);
         redoBtn.setBackground(col2);
         redoBtn.setForeground(Color.white);
         redoBtn.setFont(boldFont);
@@ -179,7 +179,7 @@ public class GUI extends JFrame {
         });
         //FOR warning label
         WarningLabel=new JLabel();
-        WarningLabel.setBounds(30,250,350,50);
+        WarningLabel.setBounds(30,260,350,50);
         WarningLabel.setForeground(white_blue);
         boldFont = new Font("SansSerif", Font.BOLD, 16);
         WarningLabel.setFont(boldFont);
@@ -193,9 +193,9 @@ public class GUI extends JFrame {
         lbl.setFont(boldFont);
         //User guide
         JLabel userGuide = new JLabel();
-        userGuide.setBounds(245, 190, 360, 80);
+        userGuide.setBounds(210, 180, 360, 90);
         userGuide.setForeground(col3);
-        userGuide.setText("<html>*Double click on nodes and<br/> edges to edit the text.<br/>*Make sure the nodes names<br/> are unique.</html>");
+        userGuide.setText("<html>*Double click on nodes and<br/> edges to edit the text.<br/>*Make sure the nodes names are unique.<br/>*The first node added to<br/>the graph is the input.</html>");
         boldFont = new Font("SansSerif", Font.ITALIC + Font.BOLD, 13);
         userGuide.setFont(boldFont);
         //label for input :
