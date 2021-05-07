@@ -10,12 +10,14 @@ import com.mxgraph.util.mxStyleUtils;
 import com.mxgraph.view.mxGraph;
 import com.mxgraph.view.mxStylesheet;
 import graphs.Graph;
+import graphs.Node;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Map;
 
@@ -74,12 +76,16 @@ public class GUI extends JFrame {
             }
 
     );
+    graph.addListener(mxEvent.LABEL_CHANGED, (sender, evt) -> {
+         mxICell vertex =(mxICell) evt.getProperties().get("vertex");
+    }
+
+    );
     mainPane.add(graphComponent);
     setEdgeStyle();
     }
 
     private void initComponents() {
-        myGraph =new Graph();
         // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables
         getContentPane().setLayout(new BorderLayout());
         mainPane = new JPanel();
@@ -113,11 +119,9 @@ public class GUI extends JFrame {
         startBtn.setBorder(BorderFactory.createEmptyBorder());
         startBtn.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
-                myGraph.removeGraph();
                 if(checkEdgesValue()){
                     startCalculation();
                 }
-
             }
         });
         //FOR REMOVING THE WHOLE GRAPH
@@ -132,7 +136,6 @@ public class GUI extends JFrame {
                 graph.removeCells(graph.getChildVertices(graph.getDefaultParent()));
                 graph.getModel().beginUpdate();
                 graph.getModel().endUpdate();
-                myGraph.removeGraph();
                 addvertex();
             }
         });
@@ -204,6 +207,7 @@ public class GUI extends JFrame {
         //input :
         display = new JTextArea();
         display.setText(output);
+
         display.setEditable(false); // set textArea non-editable
         display.setBackground(new Color(176, 175, 179 ));
         boldFont = new Font("SansSerif", Font.ITALIC, 17);
@@ -286,17 +290,27 @@ public class GUI extends JFrame {
     public void startCalculation()
     {
         Object[] list = graph.getChildVertices(graph.getDefaultParent());
+        LinkedList vertices = new LinkedList(Arrays.asList(list));
+        Node[] nodes = new Node[list.length];
+        for(int i=0; i<list.length; i++)
+        {
+            Node node = new Node(i, (String)((mxICell)list[i]).getValue());
+            nodes[i] = node;
+        }
+        myGraph = new Graph(list.length);
         System.out.println(list.length);
         for(int i=0; i< list.length; i++)
         {
             mxICell vertex = (mxICell) list[i];
-            myGraph.addVertex();
             Object[] edges = graph.getEdges(vertex, graph.getDefaultParent(), false, true, true);
             for (int j =0; j<edges.length; j++)
             {
-                String destination =(String) (((mxICell)edges[j]).getTerminal(false)).getValue();
-                String source =(String) (((mxICell)edges[j]).getTerminal(true)).getValue();
-                myGraph.addEgde(source, destination, Integer.valueOf((String) graph.getModel().getValue(edges[j])));
+                Node sourceNode = new Node(i, (String) vertex.getValue());
+                String dest =(String) (((mxICell)edges[j]).getTerminal(false)).getValue();
+                int index = vertices.indexOf(((mxICell)edges[j]).getTerminal(false));
+                System.out.println("index = " + index);
+                Node destNode = new Node(index, dest);
+                myGraph.addEgde(sourceNode, destNode, Integer.valueOf((String) graph.getModel().getValue(edges[j])));
             }
             
         }
