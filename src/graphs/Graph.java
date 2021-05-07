@@ -25,8 +25,8 @@ public class Graph {
         for (int i = 0; i < adjacencylist.length; i++) {
             LinkedList<Edge> list = adjacencylist[i];
             for (int j = 0; j < list.size(); j++) {
-                System.out.println("vertex-" + list.get(j).source.getName() + " index " + list.get(j).source.getId() + " is connected to " +
-                        list.get(j).destination.getName() + " index " + list.get(j).destination.getId() + " with weight " + list.get(j).weight);
+                System.out.println("vertex-" + list.get(j).source.getName() + " index " + list.get(j).source.getId() + "Boolean : " + list.get(j).source.isOutput()+ " is connected to " +
+                        list.get(j).destination.getName() + " index " + list.get(j).destination.getId()+ " Boolean: " + list.get(j).destination.isOutput()+ " with weight " + list.get(j).weight);
             }
         }
     }

@@ -35,6 +35,7 @@ public class GUI extends JFrame {
     JButton removeGraphBtn;
     JLabel WarningLabel;
     JTextArea display;
+    JTextField txt;
     public String output = "Heloo hvjhasjfjdafhjfdafdhafhjadsfhjfdashfvshvhcvhafchfh\njghjfsjhsvahvxhajfcjafdhfhdvhavhjvshavdhfhdfahfshafhdfahfdjafdhfahvcxhvbxv\nbjkvahdfhafhdfshfahdfhsafdj\nbjkvahdfhafhdfshfahdfhsafdj\nbjkvahdfhafhdfshfahdfhsafdj\nbjkvahdfhafhdfshfahdfhsafdj\nbjkvahdfhafhdfshfahdfhsafdj\nbjkvahdfhafhdfshfahdfhsafdj\nbjkvahdfhafhdfshfahdfhsafdj\nbjkvahdfhafhdfshfahdfhsafdj\nbjkvahdfhafhdfshfahdfhsafdj\nbjkvahdfhafhdfshfahdfhsafdj\nbjkvahdfhafhdfshfahdfhsafdj\nbjkvahdfhafhdfshfahdfhsafdj\nbjkvahdfhafhdfshfahdfhsafdj\nbjkvahdfhafhdfshfahdfhsafdj\nbjkvahdfhafhdfshfahdfhsafdj\nbjkvahdfhafhdfshfahdfhsafdj";
     LinkedList<Object> redo;
     public GUI() {
@@ -119,7 +120,7 @@ public class GUI extends JFrame {
         startBtn.setBorder(BorderFactory.createEmptyBorder());
         startBtn.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
-                if(checkEdgesValue()){
+                if(checkEdgesValue() && checkNodesNames() && textExists()){
                     startCalculation();
                 }
             }
@@ -142,7 +143,7 @@ public class GUI extends JFrame {
         boldFont = new Font("SansSerif", Font.ITALIC, 14);
         //FOR UNDO :
         JButton undoBtn = new JButton("Undo");
-        undoBtn.setBounds(250,135,80,30);
+        undoBtn.setBounds(250,120,80,30);
         undoBtn.setBackground(col2);
         undoBtn.setForeground(Color.white);
         undoBtn.setFont(boldFont);
@@ -154,7 +155,7 @@ public class GUI extends JFrame {
         });
         //FOR REDO:
         JButton redoBtn = new JButton("Redo");
-        redoBtn.setBounds(250,175,80,30);
+        redoBtn.setBounds(250,160,80,30);
         redoBtn.setBackground(col2);
         redoBtn.setForeground(Color.white);
         redoBtn.setFont(boldFont);
@@ -194,20 +195,19 @@ public class GUI extends JFrame {
         JLabel userGuide = new JLabel();
         userGuide.setBounds(245, 190, 360, 80);
         userGuide.setForeground(col3);
-        userGuide.setText("<html>*Double click on nodes and<br/> edges to edit the text.</html>");
+        userGuide.setText("<html>*Double click on nodes and<br/> edges to edit the text.<br/>*Make sure the nodes names<br/> are unique.</html>");
         boldFont = new Font("SansSerif", Font.ITALIC + Font.BOLD, 13);
         userGuide.setFont(boldFont);
         //label for input :
         JLabel lb = new JLabel();
-        lb.setBounds(20, 310, 100, 20);
+        lb.setBounds(20, 340, 100, 20);
         lb.setForeground(col3);
-        lb.setText("Input: ");
+        lb.setText("Output: ");
         boldFont = new Font("SansSerif", Font.BOLD, 20);
         lb.setFont(boldFont);
         //input :
         display = new JTextArea();
         display.setText(output);
-
         display.setEditable(false); // set textArea non-editable
         display.setBackground(new Color(176, 175, 179 ));
         boldFont = new Font("SansSerif", Font.ITALIC, 17);
@@ -215,10 +215,22 @@ public class GUI extends JFrame {
         display.setFont(boldFont);
         display.setBorder(new EmptyBorder(20,20,0,0));//top,left,bottom,right
         JScrollPane scroll = new JScrollPane(display);
-        scroll.setBounds(20, 350, 400, 400);
+        scroll.setBounds(20, 370, 400, 430);
         scroll.setSize(400, 430);
         scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
         scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        //output node text:
+        boldFont = new Font("SansSerif", Font.BOLD, 16);
+        JLabel txtlbl = new JLabel();
+        txtlbl.setBounds(30, 310, 180, 20);
+        txtlbl.setForeground(col3);
+        txtlbl.setText("Output Node Name:");
+        txtlbl.setFont(boldFont);
+        txt = new JTextField();
+        txt.setBounds(210, 310, 150, 25);
+        txt.setFont(boldFont);
+        panelComp.add(txtlbl);
+        panelComp.add(txt);
         panelComp.add(scroll);
         panelComp.add(userGuide);
         panelComp.add(lbl);
@@ -249,7 +261,7 @@ public class GUI extends JFrame {
         targetStyle = mxStyleUtils.setStyle(targetStyle , mxConstants.STYLE_STROKECOLOR, "black" );
         targetStyle = mxStyleUtils.setStyle(targetStyle, mxConstants.STYLE_FILLCOLOR, colorstr);
         targetStyle = mxStyleUtils.setStyle(targetStyle, mxConstants.STYLE_FONTCOLOR, "white");
-        targetStyle = mxStyleUtils.setStyle(targetStyle, mxConstants.STYLE_FONTSIZE, "17");
+        targetStyle = mxStyleUtils.setStyle(targetStyle, mxConstants.STYLE_FONTSIZE, "15");
         targetStyle = mxStyleUtils.setStyle(targetStyle, mxConstants.STYLE_SHAPE, mxConstants.SHAPE_ELLIPSE);
         vertex.setStyle(targetStyle);
     }
@@ -260,7 +272,7 @@ public class GUI extends JFrame {
         stil.put(mxConstants.STYLE_STROKECOLOR, "black");
         stil.put(mxConstants.STYLE_FONTCOLOR, "white");
         stil.put(mxConstants.STYLE_LABEL_BACKGROUNDCOLOR, "black");
-        stil.put(mxConstants.STYLE_FONTSIZE, "18");
+        stil.put(mxConstants.STYLE_FONTSIZE, "15");
         stil.put(mxConstants.STYLE_EDGE, mxConstants.EDGESTYLE_ORTHOGONAL);
         foo.setDefaultEdgeStyle(stil);
         graph.setStylesheet(foo);
@@ -268,7 +280,7 @@ public class GUI extends JFrame {
 
     public void addvertex(){
         Object v = graph.insertVertex(graph.getDefaultParent(), null,"Text" , 30, 30,
-                60, 60);
+                50, 50);
         mxICell ver = (mxICell) v;
         setVertexStyle(ver, "#FF2D96");
         resetGraph();
@@ -291,12 +303,6 @@ public class GUI extends JFrame {
     {
         Object[] list = graph.getChildVertices(graph.getDefaultParent());
         LinkedList vertices = new LinkedList(Arrays.asList(list));
-        Node[] nodes = new Node[list.length];
-        for(int i=0; i<list.length; i++)
-        {
-            Node node = new Node(i, (String)((mxICell)list[i]).getValue());
-            nodes[i] = node;
-        }
         myGraph = new Graph(list.length);
         System.out.println(list.length);
         for(int i=0; i< list.length; i++)
@@ -305,11 +311,16 @@ public class GUI extends JFrame {
             Object[] edges = graph.getEdges(vertex, graph.getDefaultParent(), false, true, true);
             for (int j =0; j<edges.length; j++)
             {
-                Node sourceNode = new Node(i, (String) vertex.getValue());
+                String source = (String) vertex.getValue();
+                Node sourceNode = new Node(i, source);
+                if(source.equals(txt.getText()))
+                    sourceNode.setOutput(true);
                 String dest =(String) (((mxICell)edges[j]).getTerminal(false)).getValue();
                 int index = vertices.indexOf(((mxICell)edges[j]).getTerminal(false));
                 System.out.println("index = " + index);
                 Node destNode = new Node(index, dest);
+                if(dest.equals(txt.getText()))
+                    destNode.setOutput(true);
                 myGraph.addEgde(sourceNode, destNode, Integer.valueOf((String) graph.getModel().getValue(edges[j])));
             }
             
@@ -345,6 +356,36 @@ public class GUI extends JFrame {
             Object obj = redo.removeLast();
             graph.addCell((mxICell)obj);
         }
+    }
+    public boolean checkNodesNames(){
+        Object[] list = graph.getChildVertices(graph.getDefaultParent());
+        for(int i=0;i<list.length-1;i++){
+            String first=(String)((mxICell)list[i]).getValue();
+            for (int j=i+1;j<list.length;j++){
+                String second =(String)((mxICell)list[j]).getValue();
+                if(first.equalsIgnoreCase(second)){
+                    WarningLabel.setForeground(new Color(225, 5, 108));
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+    public boolean textExists()
+    {
+        Object[] list = graph.getChildVertices(graph.getDefaultParent());
+        for(int i=0; i<list.length; i++)
+        {
+            mxICell ver = (mxICell) list[i];
+            String name = (String) ver.getValue();
+            if((txt.getText()).equals(name))
+            {
+                WarningLabel.setForeground(white_blue);
+                return true;
+            }
+        }
+        WarningLabel.setForeground(new Color(225, 5, 108));
+        return false;
     }
 }
 

@@ -3,6 +3,7 @@ package graphs;
 public class Node {
     int id;
     String name;
+    boolean output = false;
     public Node(int id, String name)
     {
         this.id = id;
@@ -23,5 +24,13 @@ public class Node {
 
     public String getName() {
         return name;
+    }
+
+    public boolean isOutput() {
+        return output;
+    }
+
+    public void setOutput(boolean output) {
+        this.output = output;
     }
 }
