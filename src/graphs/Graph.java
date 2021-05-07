@@ -30,6 +30,12 @@ public class Graph {
             }
         }
     }
+    public String printResults()
+    {
+        TransferFunctionFinder finder = new TransferFunctionFinder(this);
+        finder.analyzeSignalFlowGraph();
+        return finder.showAnalysisInGUI();
+    }
 
 }
 

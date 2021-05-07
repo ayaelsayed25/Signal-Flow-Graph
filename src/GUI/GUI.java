@@ -36,10 +36,10 @@ public class GUI extends JFrame {
     JLabel WarningLabel;
     JTextArea display;
     JTextField txt;
-    public String output = "Heloo hvjhasjfjdafhjfdafdhafhjadsfhjfdashfvshvhcvhafchfh\njghjfsjhsvahvxhajfcjafdhfhdvhavhjvshavdhfhdfahfshafhdfahfdjafdhfahvcxhvbxv\nbjkvahdfhafhdfshfahdfhsafdj\nbjkvahdfhafhdfshfahdfhsafdj\nbjkvahdfhafhdfshfahdfhsafdj\nbjkvahdfhafhdfshfahdfhsafdj\nbjkvahdfhafhdfshfahdfhsafdj\nbjkvahdfhafhdfshfahdfhsafdj\nbjkvahdfhafhdfshfahdfhsafdj\nbjkvahdfhafhdfshfahdfhsafdj\nbjkvahdfhafhdfshfahdfhsafdj\nbjkvahdfhafhdfshfahdfhsafdj\nbjkvahdfhafhdfshfahdfhsafdj\nbjkvahdfhafhdfshfahdfhsafdj\nbjkvahdfhafhdfshfahdfhsafdj\nbjkvahdfhafhdfshfahdfhsafdj\nbjkvahdfhafhdfshfahdfhsafdj\nbjkvahdfhafhdfshfahdfhsafdj";
+    public String output = "";
     LinkedList<Object> redo;
     public GUI() {
-    super("Producer Consumer");
+    super("Signal-Flow Graph");
 
     initComponents();
 
@@ -326,6 +326,8 @@ public class GUI extends JFrame {
             
         }
         myGraph.printGraph();
+        this.output = myGraph.printResults();
+        this.display.setText(this.output);
 
     }
 
