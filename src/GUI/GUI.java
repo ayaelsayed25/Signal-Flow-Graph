@@ -325,7 +325,6 @@ public class GUI extends JFrame {
             }
             
         }
-        myGraph.printGraph();
         this.output = myGraph.printResults();
         this.display.setText(this.output);
 

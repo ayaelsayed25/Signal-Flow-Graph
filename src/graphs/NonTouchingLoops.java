@@ -125,7 +125,7 @@ public class NonTouchingLoops {
                 for (int j = 0; j < nNonTouchingLoop.size(); j++) {
                     int[] temp = nNonTouchingLoop.get(j);
                     for (int k = 0; k < temp.length; k++) {
-                        total += ("Loop " + temp[k]);
+                        total += ("Loop " + (temp[k] + 1));
                         if (k != temp.length - 1) {
                             total += " , ";
                         }

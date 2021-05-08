@@ -95,7 +95,7 @@ public class ForwardPathsFinder {
         for (int i = 0 ; i < forwardPaths.size() ; i++ ){
             LinkedList<Edge> currentPath = forwardPaths.get(i);
             pathsString += "Forward path  " + (i+1) + " :    ";
-            pathsString += currentPath.get(i).source.name ;
+            pathsString += currentPath.get(0).source.name ;
             for( int j = 0; j < currentPath.size() ; j++ ){
                 pathsString += " --> " + currentPath.get(j).destination.name;
             }
