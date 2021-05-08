@@ -1,3 +1,3 @@
 # Signal-Flow-graphs
 A signal flow graph is a representation of a system that we use to find the system transfer function. We implemented a program that lets the user draw a signal flow graph of a system using nodes, branches connecting between them and specifying gains at every edge. The program then analyzes the signal flow graph of the system and outputs the forward paths, loops, all combinations of n non-touching loops, the values of  𝜟1 , 𝜟2 , …, 𝜟m  (where m is number of forward paths), and overall system transfer function.
-![alt text](https://github.com/ayaelsayed25/Signal-Flow-Graph/blob/master/Screenshot(27).png?raw=true)
+![alt text](https://github.com/ayaelsayed25/Signal-Flow-Graph/blob/master/Screenshot (27).png?raw=true)
