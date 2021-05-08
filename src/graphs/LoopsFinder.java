@@ -1,20 +1,24 @@
 package graphs;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 
 public class LoopsFinder {
-
+    HashMap<Long, Integer> summingId = new HashMap<Long, Integer>();
     ArrayList<ArrayList<Edge>> loops = new ArrayList<ArrayList<Edge>>();
     ArrayList<Edge> tempLoop = new ArrayList<Edge>();
-
+    Long sum=(long) 0;
     public  boolean isLoop(int loopStart, LinkedList<Edge>[] adjacencylist , boolean[] visited, int currentVertex){
         if(visited[currentVertex]){
             if(currentVertex == loopStart) {
                 if(!(tempLoop.get(tempLoop.size()-1).getSource().getId() < currentVertex)){
                     if(!(tempLoop.get(0).getDestination().getId() < currentVertex)) {
                         if(tempLoop.size() == 1){
-                            addLoop();
+                            if (!summingId.containsKey(sum)) {
+                                addLoop();
+                                summingId.put(sum,loops.size()-1);
+                            }
                         }
                         return true;
                     }
@@ -26,12 +30,18 @@ public class LoopsFinder {
         for(int i = 0; i < adjacencylist[currentVertex].size(); i++){
             visited[currentVertex] = true;
             tempLoop.add(adjacencylist[currentVertex].get(i));
+            sum+=adjacencylist[currentVertex].get(i).getEdgeId();
+
             flag = isLoop(loopStart, adjacencylist, visited, adjacencylist[currentVertex].get(i).getDestination().getId());
             visited[currentVertex] = false;
             if(flag==true){
-                addLoop();
+                if (!summingId.containsKey(sum)) {
+                    addLoop();
+                    summingId.put(sum,loops.size()-1);
+                }
             }
             tempLoop.remove(adjacencylist[currentVertex].get(i));
+            sum-=adjacencylist[currentVertex].get(i).getEdgeId();
         }
 
         return false;
@@ -45,8 +55,11 @@ public class LoopsFinder {
             for (int j = 0; j < adjacencylist[i].size(); ++j) {
                 //ArrayList<Edge> loop = new ArrayList<Edge>();
                 tempLoop.add(adjacencylist[i].get(j));
+                sum+=adjacencylist[i].get(j).getEdgeId();
                 boolean flag = isLoop(i, adjacencylist, visited, adjacencylist[i].get(j).getDestination().getId());
                 tempLoop.remove(adjacencylist[i].get(j));
+                sum-=adjacencylist[i].get(j).getEdgeId();
+
             }
             visited[i] = false;
         }
@@ -96,3 +109,4 @@ public class LoopsFinder {
 
 
 }
+

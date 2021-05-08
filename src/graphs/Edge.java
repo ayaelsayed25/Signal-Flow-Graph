@@ -1,16 +1,16 @@
 package graphs;
-
 public class Edge {
+    Node source;
+    Node destination;
+    int weight;
+    Long edgeId;
 
-        Node source;
-        Node destination;
-        int weight;
-
-        public Edge(Node source, Node destination, int weight) {
-            this.source = source;
-            this.destination = destination;
-            this.weight = weight;
-        }
+    public Edge(Node source, Node destination, int weight) {
+        this.source = source;
+        this.destination = destination;
+        this.weight = weight;
+        edgeId= IdManager.generateUniqueId();
+    }
 
     public Node getSource() {
         return source;
@@ -23,5 +23,9 @@ public class Edge {
     public int getWeight() {
         return weight;
     }
+    public Long getEdgeId() {
+        return edgeId;
+    }
+
 
 }
